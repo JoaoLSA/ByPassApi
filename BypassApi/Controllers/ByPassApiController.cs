@@ -17,29 +17,34 @@ namespace BypassApi.Controllers
     public class ByPassApiController : ControllerBase
     {
 
-        private readonly ILogger<ByPassApiController> _logger;
-
-        public ByPassApiController(ILogger<ByPassApiController> logger)
+        public ByPassApiController()
         {
-            _logger = logger;
         }
 
         [HttpGet]
         public async Task<Movie> Get(int Id)
         {
-            using var client = new HttpClient();
-            client.BaseAddress = new Uri($"https://api.themoviedb.org/3/movie/{Id}?api_key=82e1a6e0bc65e50a5fd5ea2b171e83da");
-            //HTTP GET
-            var result = await client.GetAsync("");
-
-            Movie movie = null;
-            if (result.IsSuccessStatusCode)
+            try
             {
+                using var client = new HttpClient
+                {
+                    BaseAddress = new Uri($"https://api.themoviedb.org/3/movie/{Id}?api_key=82e1a6e0bc65e50a5fd5ea2b171e83da")
+                };
+                //HTTP GET
+                var result = await client.GetAsync("");
 
-                string responseBody = await result.Content.ReadAsStringAsync();
-                movie = JsonSerializer.Deserialize<Movie>(responseBody);
+                Movie movie = null;
+                if (result.IsSuccessStatusCode)
+                {
+
+                    string responseBody = await result.Content.ReadAsStringAsync();
+                    movie = JsonSerializer.Deserialize<Movie>(responseBody);
+                }
+                return movie;
+            } catch (Exception)
+            {
+                throw new Exception("Un unexpected error occurred");
             }
-            return movie;
         }
     }
 }
