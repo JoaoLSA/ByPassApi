@@ -1,6 +1,7 @@
 ﻿using BypassApi.Interfaces;
 using BypassApi.ViewModels;
 using System;
+using System.Net;
 using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -32,6 +33,8 @@ namespace BypassApi.Repositories
                 string responseBody = await result.Content.ReadAsStringAsync();
                 movie = JsonSerializer.Deserialize<MovieViewModel>(responseBody);
                 movie.invertedTitle = _stringHelpers.InvertString(movie.title);
+            } else if (result.StatusCode == HttpStatusCode.NotFound) {
+                throw new Exception("Movie not found");
             }
             return movie;
         }
