@@ -9,6 +9,12 @@ namespace BypassApi.Repositories
 {
     public class MovieAPIRepository : IMovieAPIRepository
     {
+        private readonly IMovieAPIConnector _movieAPIConnection;
+
+        public MovieAPIRepository(IMovieAPIConnector movieAPIConnection)
+        {
+            _movieAPIConnection = movieAPIConnection;
+        }
         private string InvertString(string toInvert)
         {
             if (toInvert == null) return null;
@@ -19,12 +25,7 @@ namespace BypassApi.Repositories
 
         public async Task<MovieViewModel> GetMovieById(int Id)
         {
-            using var client = new HttpClient
-            {
-                BaseAddress = new Uri($"https://api.themoviedb.org/3/movie/{Id}?api_key=82e1a6e0bc65e50a5fd5ea2b171e83da")
-            };
-            //HTTP GET
-            var result = await client.GetAsync("");
+            var result = await _movieAPIConnection.GetAsync($"movie/{Id}");
 
             MovieViewModel movie = null;
             if (result.IsSuccessStatusCode)
