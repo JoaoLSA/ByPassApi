@@ -29,7 +29,6 @@ namespace BypassApi
         {
             services.AddControllers();
 
-            services.AddSingleton<IMovieAPIConnector, MovieAPIConnector>();
             services.AddScoped<IMovieAPIRepository, MovieAPIRepository>();
         }
 
