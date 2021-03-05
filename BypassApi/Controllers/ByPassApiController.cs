@@ -3,13 +3,13 @@ using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 
 namespace BypassApi.Controllers
 {
     public class Movie
     {
         public string title { get; set; }
+        public string invertedTitle { get; set; }
     }
 
     [ApiController]
@@ -19,6 +19,14 @@ namespace BypassApi.Controllers
 
         public ByPassApiController()
         {
+        }
+
+        private string InvertString(string toInvert)
+        {
+            if (toInvert == null) return null;
+            char[] toInvertArray = toInvert.ToCharArray();
+            Array.Reverse(toInvertArray);
+            return new string(toInvertArray);
         }
 
         [HttpGet]
@@ -39,9 +47,11 @@ namespace BypassApi.Controllers
 
                     string responseBody = await result.Content.ReadAsStringAsync();
                     movie = JsonSerializer.Deserialize<Movie>(responseBody);
+                    movie.invertedTitle = this.InvertString(movie.title);
                 }
                 return movie;
-            } catch (Exception)
+            }
+            catch (Exception)
             {
                 throw new Exception("Un unexpected error occurred");
             }
