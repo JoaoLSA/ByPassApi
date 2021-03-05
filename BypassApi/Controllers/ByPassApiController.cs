@@ -2,15 +2,11 @@
 using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
+using BypassApi.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BypassApi.Controllers
 {
-    public class Movie
-    {
-        public string title { get; set; }
-        public string invertedTitle { get; set; }
-    }
 
     [ApiController]
     [Route("/api")]
@@ -30,7 +26,7 @@ namespace BypassApi.Controllers
         }
 
         [HttpGet]
-        public async Task<Movie> Get(int Id)
+        public async Task<MovieViewModel> Get(int Id)
         {
             try
             {
@@ -41,12 +37,12 @@ namespace BypassApi.Controllers
                 //HTTP GET
                 var result = await client.GetAsync("");
 
-                Movie movie = null;
+                MovieViewModel movie = null;
                 if (result.IsSuccessStatusCode)
                 {
 
                     string responseBody = await result.Content.ReadAsStringAsync();
-                    movie = JsonSerializer.Deserialize<Movie>(responseBody);
+                    movie = JsonSerializer.Deserialize<MovieViewModel>(responseBody);
                     movie.invertedTitle = this.InvertString(movie.title);
                 }
                 return movie;
