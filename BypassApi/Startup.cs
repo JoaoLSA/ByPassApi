@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using BypassApi.Helpers;
 using BypassApi.Interfaces;
 using BypassApi.Repositories;
 using Microsoft.AspNetCore.Builder;
@@ -30,6 +31,8 @@ namespace BypassApi
             services.AddControllers();
 
             services.AddScoped<IMovieAPIRepository, MovieAPIRepository>();
+
+            services.AddSingleton<IStringHelpers, StringHelpers>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

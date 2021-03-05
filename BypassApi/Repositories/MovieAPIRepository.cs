@@ -9,12 +9,11 @@ namespace BypassApi.Repositories
 {
     public class MovieAPIRepository : IMovieAPIRepository
     {
-        private string InvertString(string toInvert)
+        private IStringHelpers _stringHelpers;
+
+        public MovieAPIRepository(IStringHelpers stringHelpers)
         {
-            if (toInvert == null) return null;
-            char[] toInvertArray = toInvert.ToCharArray();
-            Array.Reverse(toInvertArray);
-            return new string(toInvertArray);
+            _stringHelpers = stringHelpers;
         }
 
         public async Task<MovieViewModel> GetMovieById(int Id)
@@ -32,7 +31,7 @@ namespace BypassApi.Repositories
 
                 string responseBody = await result.Content.ReadAsStringAsync();
                 movie = JsonSerializer.Deserialize<MovieViewModel>(responseBody);
-                movie.invertedTitle = this.InvertString(movie.title);
+                movie.invertedTitle = _stringHelpers.InvertString(movie.title);
             }
             return movie;
         }
