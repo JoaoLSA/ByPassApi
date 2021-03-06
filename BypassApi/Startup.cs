@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using BypassApi.APIConnections;
 using BypassApi.Helpers;
 using BypassApi.Interfaces;
 using BypassApi.Repositories;
@@ -30,6 +31,7 @@ namespace BypassApi
         {
             services.AddControllers();
 
+            services.AddSingleton<IMovieAPIConnector, MovieAPIConnector>();
             services.AddScoped<IMovieAPIRepository, MovieAPIRepository>();
 
             services.AddSingleton<IStringHelpers, StringHelpers>();

@@ -2,7 +2,6 @@
 using BypassApi.ViewModels;
 using System;
 using System.Net;
-using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
 
@@ -11,20 +10,17 @@ namespace BypassApi.Repositories
     public class MovieAPIRepository : IMovieAPIRepository
     {
         private IStringHelpers _stringHelpers;
+        private readonly IMovieAPIConnector _movieAPIConnection;
 
-        public MovieAPIRepository(IStringHelpers stringHelpers)
+        public MovieAPIRepository(IMovieAPIConnector movieAPIConnection, IStringHelpers stringHelpers)
         {
+            _movieAPIConnection = movieAPIConnection;
             _stringHelpers = stringHelpers;
         }
 
         public async Task<MovieViewModel> GetMovieById(int Id)
         {
-            using var client = new HttpClient
-            {
-                BaseAddress = new Uri($"https://api.themoviedb.org/3/movie/{Id}?api_key=82e1a6e0bc65e50a5fd5ea2b171e83da")
-            };
-            //HTTP GET
-            var result = await client.GetAsync("");
+            var result = await _movieAPIConnection.HttpClient.GetAsync($"");
 
             MovieViewModel movie = null;
             if (result.IsSuccessStatusCode)
