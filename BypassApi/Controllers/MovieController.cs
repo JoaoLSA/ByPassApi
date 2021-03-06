@@ -11,11 +11,11 @@ namespace BypassApi.Controllers
 
     [ApiController]
     [Route("/api")]
-    public class ByPassApiController : ControllerBase
+    public class MovieController : ControllerBase
     {
         private readonly IMovieAPIRepository _movieAPIRepository;
 
-        public ByPassApiController(IMovieAPIRepository movieAPIRepository)
+        public MovieController(IMovieAPIRepository movieAPIRepository)
         {
             _movieAPIRepository = movieAPIRepository;
         }
