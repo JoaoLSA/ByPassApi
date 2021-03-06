@@ -1,12 +1,9 @@
 ﻿using BypassApi.Interfaces;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace BypassApi.Helpers
 {
-    public class StringHelpers: IStringHelpers
+    public class StringHelpers : IStringHelpers
     {
         public string InvertString(string toInvert)
         {
